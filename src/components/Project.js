@@ -4,10 +4,24 @@ import Modal from "./Modal";
 import RenameProject from "./RenameProject";
 import { TodoContext } from "../context";
 import firebase from '../firebase'
+import {useSpring,animated, useTransition} from 'react-spring'
 // import RenameProject from './RenameProject'
 function Project({ project, edit }) {
   const { defaultProject,selectedProject,setSelectedProject } = useContext(TodoContext);
   const [showModal, setShowModal] = useState(false);
+
+  const fadeIn=useSpring({
+    from:{marginTop:'-12px',opacity:0},
+    to:{ marginTop:'0px',opacity:1}
+  })
+
+  const btnTransition=useTransition(edit,{
+    from:{opacity:0,right:'-20px'},
+    enter:{opacity:1,right:'0px'},
+    leave:{opacity:0,right:'-20px'}
+
+
+  })
 
   const deleteProject=(project)=>{
     firebase
@@ -35,13 +49,15 @@ function Project({ project, edit }) {
     })
   }
   return (
-    <div className="Project">
+    <animated.div style={fadeIn} className="Project">
       <div className="name" onClick={() => setSelectedProject(project.name)} >
         {project.name}
       </div>
       <div className="btns">
-        {edit ? (
-          <div className="edit-delete">
+        {
+          btnTransition((props,editProject)=>
+            editProject ? (
+          <animated.div style={props} className="edit-delete">
             <span className="edit">
               <Pencil onClick={() => setShowModal(true)} size="13" />
             </span>
@@ -50,17 +66,19 @@ function Project({ project, edit }) {
             >
               <XCircle size="13" />
             </span>
-          </div>
+          </animated.div>
         ) : project.numOfTodos === 0 ? (
           ""
         ) : (
-          <div className="total-todos">{project.numOfTodos}</div>
-        )}
+          <animated.div style={props} className="total-todos">{project.numOfTodos}</animated.div>
+        )  
+          )
+        }
       </div>
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <RenameProject project={project} setShowModal={setShowModal} />
       </Modal>
-    </div>
+    </animated.div>
   );
 }
 

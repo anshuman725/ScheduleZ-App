@@ -7,6 +7,7 @@ import {
   Trash,
 } from "react-bootstrap-icons";
 import moment from "moment";
+import {useSpring,animated, useTransition} from 'react-spring'
 
 import {TodoContext} from '../context'
 
@@ -41,24 +42,40 @@ function Todo({ todo }) {
     delete repeatedTodo.id;
 
     firebase.firestore().collection("todos").add(repeatedTodo);
+
   };
+  const fadeIn=useSpring({
+    from:{marginTop:'-12px',opacity:0},
+    to:{ marginTop:'0px',opacity:1}
+  })
+  const checkTransition=useTransition(todo.checked,{
+    from:{position:'absolute',transform:'scale(0)'},
+    enter:{transform:'scale(1)'},
+    leave:{transform:'scale(0)'}
+
+
+  })
   return (
-    <div className="Todo">
+    <animated.div style={fadeIn} className="Todo">
       <div
         className="todo-container"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
         <div className="check-todo" onClick={() => checkTodo(todo)}>
-          {todo.checked ? (
-            <span className="checked">
+          {
+            checkTransition((props,checked)=>
+              todo.checked ? (
+            <animated.span style={props} className="checked">
               <CheckCircleFill color="#bebebe" />
-            </span>
+            </animated.span>
           ) : (
-            <span className="unchecked">
+            <animated.span style={props} className="unchecked">
               <Circle color={todo.color} />
-            </span>
-          )}
+            </animated.span>
+          )
+            )
+          }
         </div>
         <div className="text"
           onClick={()=>setSelectedTodo(todo)}
@@ -87,7 +104,7 @@ function Todo({ todo }) {
           )}
         </div>
       </div>
-    </div>
+    </animated.div>
   );
 }
 

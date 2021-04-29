@@ -29,7 +29,8 @@ function AddNewTodo() {
           date:moment(date).format('MM/DD/YYYY'),
           day:moment(date).format('d'),
           time:moment(time).format('hh:mm A'),
-          color:randomColor(),
+          checked:false,
+          color:randomColor({luminosity:'dark'}),
           projectName:todoProject
 
         }

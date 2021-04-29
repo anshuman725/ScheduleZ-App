@@ -11,6 +11,7 @@
 
 
 ## To run this project on your machine
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 ~~~
  1. Clone this repo
  2. Open the terminal in the folder
@@ -20,8 +21,5 @@
 
 
 ## Learn More About React
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
 To learn React, check out the [React documentation](https://reactjs.org/).
 
