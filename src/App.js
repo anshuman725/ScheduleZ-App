@@ -11,12 +11,6 @@ import Todos from './components/Todos';
 import EditTodos from './components/EditTodos';
 
 
-
-
-
-
-
-
 function App() {
   return (
     <div className="App" >
